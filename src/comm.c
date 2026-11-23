@@ -4,7 +4,7 @@
  * - Merc  2.1  Copyright 1992, 1993 by Michael Chastain, Michael Quan,    *
  *   and Mitchell Tse.                                                     *
  * - DikuMud    Copyright 1990, 1991 by Sebastian Hammer, Michael Seifert, *
- *   Hans-Henrik Stærfeldt, Tom Madsen, and Katja Nyboe.                   *
+ *   Hans-Henrik Stï¿½rfeldt, Tom Madsen, and Katja Nyboe.                   *
  ***************************************************************************
  * - Low-level communication module                                        *
  ***************************************************************************/
@@ -20,7 +20,9 @@
 #ifndef WIN32
 #include <unistd.h>
 #endif
+#if defined(__has_include) && __has_include(<zlib.h>)
 #include <zlib.h>
+#endif
 #include "h/mud.h"
 #include "h/channels.h"
 #include "h/auction.h"
@@ -35,6 +37,7 @@
 #include "h/clans.h"
 #include "h/whois.h"
 #include "h/mccp.h"
+#include "h/web_bridge.h"
 
 #ifdef I3
 void                    free_i3_data(bool complete);
@@ -827,7 +830,9 @@ int main(int argc, char **argv)
     copyover_recover();
   }
 
+  web_bridge_init(3000, port);
   game_loop();
+  web_bridge_shutdown();
   closesocket(control);
 
 #ifdef I3
@@ -1160,6 +1165,7 @@ void game_loop( void )
     */
    while( !mud_down )
    {
+      web_bridge_poll();
       accept_new(  );
 
       /*

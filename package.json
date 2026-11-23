@@ -1,0 +1,10 @@
+{
+  "name": "6dragons-reborn",
+  "version": "4.4.0",
+  "private": true,
+  "scripts": {
+    "dev": "make -C src && ./6dragons 4100",
+    "build": "make -C src",
+    "start": "./6dragons 4100"
+  }
+}

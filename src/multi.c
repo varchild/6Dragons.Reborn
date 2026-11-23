@@ -112,12 +112,21 @@ bool CAN_LEARN(CHAR_DATA *ch, int sn, bool canlearnnow)
   if(!canlearnnow && skill_table[sn]->skill_level[ch->Class] < 101 && skill_table[sn]->skill_level[ch->Class] > 0)
     return TRUE;
 
+  if(ch->race >= 0 && ch->race < MAX_RACE && skill_table[sn]->race_level[ch->race] < LEVEL_IMMORTAL)
+  {
+    if(ch->level >= skill_table[sn]->race_level[ch->race])
+      return TRUE;
+
+    if(!canlearnnow)
+      return TRUE;
+  }
+
   return FALSE;
 }
 
 int get_maxadept(CHAR_DATA *ch, int sn, bool availabletochar)
 {
-  int                     class1 = 0, class2 = 0, class3 = 0, result = 0;
+  int                     class1 = 0, class2 = 0, class3 = 0, racial = 0, result = 0;
 
   if(IS_NPC(ch))
     return 80;
@@ -198,11 +207,19 @@ int get_maxadept(CHAR_DATA *ch, int sn, bool availabletochar)
   class2 = URANGE(0, class2, sysdata.class2maxadept);
   class1 = URANGE(0, class1, sysdata.class1maxadept);
 
+  if(ch->race >= 0 && ch->race < MAX_RACE && skill_table[sn]->race_level[ch->race] < LEVEL_IMMORTAL)
+  {
+    if(!availabletochar || skill_table[sn]->race_level[ch->race] <= ch->level)
+      racial = URANGE(0, skill_table[sn]->race_adept[ch->race], 100);
+  }
+
   result = class1;
   if(class2 > result)
     result = class2;
   if(class3 > result)
     result = class3;
+  if(racial > result)
+    result = racial;
 
   return result;
 }
@@ -279,6 +296,19 @@ int get_maxskill(CHAR_DATA *ch, int sn, bool availabletochar)
   else
     result = sklvl1;
 
+  if(ch->race >= 0 && ch->race < MAX_RACE && skill_table[sn]->race_level[ch->race] < LEVEL_IMMORTAL)
+  {
+    int racelvl = skill_table[sn]->race_level[ch->race];
+
+    if(!availabletochar || racelvl <= ch->level)
+    {
+      if(result == 0 || result >= LEVEL_IMMORTAL)
+        result = racelvl;
+      else
+        result = UMAX(result, racelvl);
+    }
+  }
+
   return result;
 }
 
@@ -325,11 +355,41 @@ void advance_class_level(CHAR_DATA *ch)
     }
 
     ch_printf(ch, "\r\n&WYou have now obtained an overall experience level %d!&D\r\n", ++ch->level);
+    grant_racial_skills(ch, FALSE);
     restore_char(ch);
     send_to_char_color("&YYou have gained insight in the realms, and have been restored!\r\n", ch);
     snprintf(buf, MSL, "The realms rejoice as %s has just achieved level %d!&D", ch->name, ch->level);
     announce(buf);
     snprintf(buf, MSL, "%24.24s: %s obtained level %d!%s%s&D", ctime(&current_time), ch->name, ch->level, (doubleexp ? " (Double)" : ""), (happyhouron ? " (HappyHour)" : ""));
     append_to_file(PLEVEL_FILE, buf);
+  }
+}
+
+void grant_racial_skills(CHAR_DATA *ch, bool silent)
+{
+  int                     sn;
+
+  if(!ch || IS_NPC(ch) || !ch->pcdata || ch->race < 0 || ch->race >= MAX_RACE)
+    return;
+
+  for(sn = 0; sn < top_sn; sn++)
+  {
+    if(!skill_table[sn] || !skill_table[sn]->name)
+      continue;
+
+    if(skill_table[sn]->type != SKILL_RACIAL)
+      continue;
+
+    if(skill_table[sn]->race_level[ch->race] < LEVEL_IMMORTAL
+       && ch->level >= skill_table[sn]->race_level[ch->race]
+       && ch->pcdata->learned[sn] <= 0)
+    {
+      int                     adept = get_maxadept(ch, sn, TRUE);
+      int                     start_pct = UMIN(25, adept > 0 ? adept : 25);
+
+      ch->pcdata->learned[sn] = UMAX(1, start_pct);
+      if(!silent)
+        ch_printf(ch, "&CYour racial instincts awaken: you now know %s!&D\r\n", skill_table[sn]->name);
+    }
   }
 }

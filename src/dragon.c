@@ -137,9 +137,9 @@ void do_wings(CHAR_DATA *ch, char *argument)
     send_to_char("!!SOUND(sound/wings.wav)\r\n", ch);
   set_char_color(AT_GREY, ch);
 
-if(ch->race != RACE_DRAGON && ch->race != RACE_CELESTIAL && ch->race != RACE_DEMON && ch->race != RACE_VAMPIRE && ch->Class != CLASS_OWL && ch->Class != CLASS_GRYPHON && ch->Class != CLASS_BAT)
+  if(!IS_NPC(ch) && ch->race != RACE_DRAGON && ch->race != RACE_CELESTIAL && ch->race != RACE_DEMON && ch->race != RACE_VAMPIRE && ch->Class != CLASS_OWL && ch->Class != CLASS_GRYPHON && ch->Class != CLASS_BAT && !CAN_LEARN(ch, gsn_wings, TRUE))
   {
-	      if(ch->race == RACE_PIXIE)
+    if(ch->race == RACE_PIXIE)
     {
       do_fly(ch, (char *)"");
       return;

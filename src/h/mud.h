@@ -5790,6 +5790,7 @@ CD                     *scan_for_victim args((CHAR_DATA *ch, EXIT_DATA *pexit, c
 int get_maxadept        args((CHAR_DATA *ch, int sn, bool availabletochar));
 int get_maxskill        args((CHAR_DATA *ch, int sn, bool availabletochar));
 bool CAN_LEARN          args((CHAR_DATA *ch, int sn, bool canlearnnow));
+void grant_racial_skills args((CHAR_DATA *ch, bool silent));
 bool can_teach          args((CHAR_DATA *ch, CHAR_DATA *teacher, int sn));
 
 /* ban.c */

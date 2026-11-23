@@ -62,7 +62,8 @@ else
 CMP_FLG = -g -O $(WRN_FLG) 
 endif
 C_FLAGS = $(OPT_FLAG) $(CMP_FLG) $(PROF) $(NOCRYPT) $(SOLARIS_FLAG) $(TIME) $(LINUX)
-L_FLAGS = $(PROF) $(SOLARIS_LINK) -lz -lstdc++ $(MATH_LIB) 
+ZLIB_FLAG = $(if $(wildcard /usr/include/zlib.h),-lz,)
+L_FLAGS = $(PROF) $(SOLARIS_LINK) $(ZLIB_FLAG) -lstdc++ $(MATH_LIB) 
 #If there are any problems linking with -lz you may need sudo apt-get install zlib1g-dev 
 
 #Listing of all '.c' files DO NOT GET OUT OF ALPHABETICAL ORDER
@@ -76,7 +77,7 @@ C_FILES = act_comm.c      act_info.c       act_move.c     act_obj.c    act_wiz.c
           player.c        polymorph.c      portalstone.c  quests.c     races.c     renumber.c  reset.c run.c \
           save.c          ships.c          shops.c          sha256.c     skills.c     smell.c      special.c   status.c   symref.c \
           teacher.c       track.c          transfer.c       update.c       variables.c  \
-          tables.c        weather.c        whereis.c      whois.c      wild_comm.c  wild_mobs.c      
+          tables.c        weather.c        web_bridge.c    whereis.c      whois.c      wild_comm.c  wild_mobs.c      
 
 #Listing of all '.h' files necessary to create the program binary
 

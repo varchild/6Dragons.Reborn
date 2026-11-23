@@ -52,8 +52,8 @@ void do_smell(CHAR_DATA *ch, char *argument)
   int                     dir, maxdist, lastdir = 0, lastnumber = 0;
   bool                    firststep = true;
 
-   // Restrict the smell ability to the Lobohian and Dragon races.
-  if(ch->race != RACE_LOBOHIAN && ch->race != RACE_DRAGON) {
+   // Restrict the smell ability to Lobohian, Dragon, or eligible CAN_LEARN races/classes.
+  if(!IS_NPC(ch) && ch->race != RACE_LOBOHIAN && ch->race != RACE_DRAGON && !CAN_LEARN(ch, gsn_smell, TRUE)) {
     error(ch);
     return;
   }
@@ -115,6 +115,7 @@ void do_smell(CHAR_DATA *ch, char *argument)
         else if(dir == BFS_NO_PATH)
         {
           send_to_char("You can't catch the scent from here.\r\n", ch);
+          learn_from_failure(ch, gsn_smell);
           return;
         }
 

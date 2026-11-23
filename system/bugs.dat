@@ -478,3 +478,23 @@
 [*****] BUG: __FileOpen: can't open system/STAFFLIST for a. Called from db.c:5226 &D
 [*****] BUG: __FileOpen: can't open system/auth.dat.temporary for w. Called from new_auth.c:324 &D
 [*****] BUG: Cannot open auth.dat for writing. &D
+[*****] BUG: fread_bank: Deleting bank alnar because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank anya because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank hrathon because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank ibrahim because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank isahn because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank neos because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank nero because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank pinewood because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank raaa because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank sanibak because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank alnar because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank anya because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank hrathon because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank ibrahim because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank isahn because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank neos because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank nero because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank pinewood because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank raaa because it hasn't been used in at least 366 days. &D
+[*****] BUG: fread_bank: Deleting bank sanibak because it hasn't been used in at least 366 days. &D

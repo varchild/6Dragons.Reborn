@@ -1297,6 +1297,7 @@ void genesis(DESCRIPTOR_DATA *d, char *argument)
         ch->pcdata->learned[gsn_slice] = 50;
         if(ch->race == RACE_DRAGON && ch->pcdata->learned[gsn_devour] == 0)
           ch->pcdata->learned[gsn_devour] = 95;
+        grant_racial_skills(ch, TRUE);
 
         SET_BIT(d->character->pcdata->flags, PCFLAG_HINTS);
         if(!sysdata.WAIT_FOR_AUTH)
@@ -1758,6 +1759,8 @@ void genesis(DESCRIPTOR_DATA *d, char *argument)
 /* Volk: Set their default text speed, if they don't have one yet. */
       if(!ch->pcdata->textspeed)
         ch->pcdata->textspeed = 5;
+
+      grant_racial_skills(ch, FALSE);
 
 /* Volk: Make sure no skills are higher than they should be! */
       int                     sn;

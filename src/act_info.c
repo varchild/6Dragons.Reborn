@@ -4,7 +4,7 @@
  * - Merc  2.1  Copyright 1992, 1993 by Michael Chastain, Michael Quan,    *
  *   and Mitchell Tse.                                                     *
  * - DikuMud    Copyright 1990, 1991 by Sebastian Hammer, Michael Seifert, *
- *   Hans-Henrik Stærfeldt, Tom Madsen, and Katja Nyboe.                   *
+ *   Hans-Henrik Stï¿½rfeldt, Tom Madsen, and Katja Nyboe.                   *
  ***************************************************************************
  * - Informational module                                                  *
  ***************************************************************************/
@@ -4251,7 +4251,7 @@ int find_skill_class(CHAR_DATA *ch, int sn)
  * normally in this list.  Separate each with a space.
  * (Uses an is_name check). -- Altrag
  */
-#define CANT_PRAC "Tongue"
+#define CANT_PRAC "Tongue Racial"
 
 int first_learn_skill_level(CHAR_DATA *ch, int sn)
 {
@@ -4282,6 +4282,9 @@ int first_learn_skill_level(CHAR_DATA *ch, int sn)
 
   if(skill_table[sn]->skill_level[ch->Class] < firstlearn)
     firstlearn = skill_table[sn]->skill_level[ch->Class];
+
+  if(ch->race >= 0 && ch->race < MAX_RACE && skill_table[sn]->race_level[ch->race] < firstlearn)
+    firstlearn = skill_table[sn]->race_level[ch->race];
 
   return firstlearn;
 }

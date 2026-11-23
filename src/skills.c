@@ -1876,13 +1876,17 @@ void learn_from_failure(CHAR_DATA *ch, int sn)
   chance += number_range(1, 10);
 
   if(sn == gsn_forge || sn == gsn_tan || sn == gsn_bake || sn == gsn_mix || sn == gsn_mine || sn == gsn_unearth
-     || sn == gsn_gather || sn == gsn_hunt || sn == gsn_jewelry || sn == gsn_mill || sn == gsn_fell || sn == gsn_produce)
+     || sn == gsn_gather || sn == gsn_hunt || sn == gsn_jewelry || sn == gsn_mill || sn == gsn_fell || sn == gsn_produce
+     || skill_table[sn]->type == SKILL_RACIAL)
   {
     if(ch->pcdata->learned[sn] < adept && chance > 8)
     {
       learn = 1;
       ch->pcdata->learned[sn] = UMIN(adept, ch->pcdata->learned[sn] + learn);
-      act(AT_WHITE, "You learned something new from this failed attempt.", ch, NULL, NULL, TO_CHAR);
+      if(skill_table[sn]->type == SKILL_RACIAL)
+        ch_printf(ch, "&WYour instincts sharpen as you practice %s.&D\r\n", skill_table[sn]->name);
+      else
+        act(AT_WHITE, "You learned something new from this failed attempt.", ch, NULL, NULL, TO_CHAR);
       if(xIS_SET(ch->act, PLR_ENHANCED))
         send_to_char("!!SOUND(sound/learn.wav)\r\n", ch);
     }
@@ -3769,8 +3773,8 @@ void do_bite(CHAR_DATA *ch, char *argument)
     return;
   }
   
-   // Restrict the bite ability to the Lobohian and Dragon races.
-  if(ch->race != RACE_LOBOHIAN && ch->race != RACE_DRAGON) {
+   // Restrict the bite ability to the Lobohian, Dragon, Animal, or CAN_LEARN races/classes.
+  if(!IS_NPC(ch) && ch->race != RACE_LOBOHIAN && ch->race != RACE_DRAGON && ch->race != RACE_ANIMAL && !CAN_LEARN(ch, gsn_bite, TRUE)) {
     error(ch);
     return;
   }
@@ -3957,7 +3961,7 @@ void do_claw(CHAR_DATA *ch, char *argument)
     return;
   }
 
-  if(!IS_NPC(ch) && ch->level < (skill_table[gsn_claw]->skill_level[ch->Class]))
+  if(!IS_NPC(ch) && !CAN_LEARN(ch, gsn_claw, TRUE) && ch->race != RACE_DRAGON && ch->race != RACE_FELINUS)
   {
     send_to_char("That isn't quite one of your natural skills.\r\n", ch);
     return;
