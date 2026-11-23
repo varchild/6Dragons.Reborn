@@ -1,0 +1,105 @@
+#BANK
+Name        alnar~
+Password    3b33de15425ac20723f0ece81afafe15433b4d191be0ccd690242cbcb7caa69c~
+LastUsed    1648127237
+Gold        500
+End
+
+#BANK
+Name        anya~
+Password    0f0d1918a52bec6f8ba96300259ed336d004f85284e5adf465d948474ca49c15~
+LastUsed    1648579452
+Bronze      50
+Copper      1000
+Gold        10
+End
+
+#BANK
+Name        dakar~
+Password    77102b2b5cb46718ec0313d1a294db76e027f88ae8fc1bc238f02a2e41672d95~
+LastUsed    1477185964
+Silver      7215
+End
+
+#BANK
+Name        forbidden~
+Password    77102b2b5cb46718ec0313d1a294db76e027f88ae8fc1bc238f02a2e41672d95~
+LastUsed    1477185979
+Silver      3
+End
+
+#BANK
+Name        hrathon~
+Password    1257609e052d8f3f8c2bdec772ae2504c0422b414abce013a78daf500065f765~
+LastUsed    1647880582
+Copper      223
+Gold        7
+End
+
+#BANK
+Name        ibrahim~
+Password    e1b1da26ce0eb71dac0514885f24d2f1eae6b896ecb3ff38a7c25455e82a970e~
+LastUsed    1648863793
+Bronze      200
+Copper      3000
+Gold        40
+Silver      200
+End
+
+#BANK
+Name        isahn~
+Password    3ca653c4ea8b0811ab2280794243abc66b191a4ad1c59a41c83467cfa940c5c5~
+LastUsed    1649708849
+Gold        4738
+End
+
+#BANK
+Name        neos~
+Password    236e2b159a1f3b23c48caea6ea60bf60788cf3bb34fd9e66f47f70603b5d9304~
+LastUsed    1648194064
+Bronze      825
+Copper      8590
+Gold        95
+Silver      2166
+End
+
+#BANK
+Name        nero~
+Password    e1b1da26ce0eb71dac0514885f24d2f1eae6b896ecb3ff38a7c25455e82a970e~
+LastUsed    1648773905
+End
+
+#BANK
+Name        paleon~
+Password    77102b2b5cb46718ec0313d1a294db76e027f88ae8fc1bc238f02a2e41672d95~
+LastUsed    1477185971
+Silver      300
+End
+
+#BANK
+Name        pinewood~
+Password    236e2b159a1f3b23c48caea6ea60bf60788cf3bb34fd9e66f47f70603b5d9304~
+LastUsed    1649616043
+Bronze      27
+Copper      23
+Gold        2985
+Silver      10
+End
+
+#BANK
+Name        raaa~
+Password    236e2b159a1f3b23c48caea6ea60bf60788cf3bb34fd9e66f47f70603b5d9304~
+LastUsed    1648568396
+End
+
+#BANK
+Name        sanibak~
+Password    7fae5f4826a9a4290ac589d2a61d94b4dc45abf901cfc18292f9137a25f9c303~
+LastUsed    1648151085
+Bronze      2929
+Copper      3212
+Gold        602
+Silver      7513
+End
+
+#END
