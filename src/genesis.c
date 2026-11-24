@@ -1038,6 +1038,7 @@ void genesis(DESCRIPTOR_DATA *d, char *argument)
         addname(&ch->pcdata->chan_listen, "chat");
         addname(&ch->pcdata->chan_listen, "say");
         ch->level = 1;
+         grant_racial_skills(ch, TRUE);
         ch->exp = 0;
         ch->practice = 6;
         /*

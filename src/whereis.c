@@ -4,7 +4,7 @@
  * - Merc  2.1  Copyright 1992, 1993 by Michael Chastain, Michael Quan,    *
  *   and Mitchell Tse.                                                     *
  * - DikuMud    Copyright 1990, 1991 by Sebastian Hammer, Michael Seifert, *
- *   Hans-Henrik Stï¿½rfeldt, Tom Madsen, and Katja Nyboe.                   *
+ *   Hans-Henrik Stærfeldt, Tom Madsen, and Katja Nyboe.                   *
  *   LoP (C) 2006, 2007, 2008, 2009 by: the LoP team.                      *
  ***************************************************************************
  * - Tracking/hunting module                                               *

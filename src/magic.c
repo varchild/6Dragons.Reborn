@@ -4,7 +4,7 @@
  * - Merc  2.1  Copyright 1992, 1993 by Michael Chastain, Michael Quan,    *
  *   and Mitchell Tse.                                                     *
  * - DikuMud    Copyright 1990, 1991 by Sebastian Hammer, Michael Seifert, *
- *   Hans-Henrik Stï¿½rfeldt, Tom Madsen, and Katja Nyboe.                   *
+ *   Hans-Henrik Stærfeldt, Tom Madsen, and Katja Nyboe.                   *
  ***************************************************************************
  * - Spell handling module                                                 *
  ***************************************************************************/
@@ -191,13 +191,15 @@ int skill_lookup(const char *name)
   if((sn = bsearch_skill_exact(name, gsn_first_spell, gsn_first_skill - 1)) == -1)
     if((sn = bsearch_skill_exact(name, gsn_first_skill, gsn_first_weapon - 1)) == -1)
       if((sn = bsearch_skill_exact(name, gsn_first_weapon, gsn_first_tongue - 1)) == -1)
-        if((sn = bsearch_skill_exact(name, gsn_first_tongue, gsn_first_song - 1)) == -1)
-          if((sn = bsearch_skill_exact(name, gsn_first_song, gsn_top_sn - 1)) == -1)
-            if((sn = bsearch_skill_prefix(name, gsn_first_spell, gsn_first_skill - 1)) == -1)
-              if((sn = bsearch_skill_prefix(name, gsn_first_skill, gsn_first_weapon - 1)) == -1)
-                if((sn = bsearch_skill_prefix(name, gsn_first_weapon, gsn_first_tongue - 1)) == -1)
-                  if((sn = bsearch_skill_prefix(name, gsn_first_tongue, gsn_first_song - 1)) == -1)
-                    if((sn = bsearch_skill_prefix(name, gsn_first_song, gsn_top_sn - 1)) == -1 && gsn_top_sn < top_sn)
+        if((sn = bsearch_skill_exact(name, gsn_first_tongue, gsn_first_racial - 1)) == -1)
+          if((sn = bsearch_skill_exact(name, gsn_first_racial, gsn_first_song - 1)) == -1)
+            if((sn = bsearch_skill_exact(name, gsn_first_song, gsn_top_sn - 1)) == -1)
+              if((sn = bsearch_skill_prefix(name, gsn_first_spell, gsn_first_skill - 1)) == -1)
+                if((sn = bsearch_skill_prefix(name, gsn_first_skill, gsn_first_weapon - 1)) == -1)
+                  if((sn = bsearch_skill_prefix(name, gsn_first_weapon, gsn_first_tongue - 1)) == -1)
+                    if((sn = bsearch_skill_prefix(name, gsn_first_tongue, gsn_first_racial - 1)) == -1)
+                      if((sn = bsearch_skill_prefix(name, gsn_first_racial, gsn_first_song - 1)) == -1)
+                        if((sn = bsearch_skill_prefix(name, gsn_first_song, gsn_top_sn - 1)) == -1 && gsn_top_sn < top_sn)
                     {
                       for(sn = gsn_top_sn; sn < top_sn; ++sn)
                       {

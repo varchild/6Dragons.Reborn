@@ -4918,7 +4918,7 @@ void i3_savehelps( void )
         fprintf( fp, "%s", "#HELP\n" );
         fprintf( fp, "Name %s\n", help->name );
         fprintf( fp, "Perm %s\n", perm_names[help->level] );
-        fprintf( fp, "Text %sï¿½\n", help->text );
+        fprintf( fp, "Text %s¢\n", help->text );
         fprintf( fp, "%s", "End\n\n" );
     }
     fprintf( fp, "%s", "#END\n" );
@@ -4974,7 +4974,7 @@ void I3_readhelp( I3_HELP_DATA * help, FILE * fp )
                 if ( !strcasecmp( word, "Text" ) ) {
                     int                     num = 0;
 
-                    while ( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != 'ï¿½'
+                    while ( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢'
                             && num < ( LGST - 2 ) )
                         num++;
                     hbuf[num] = '\0';
@@ -9183,7 +9183,7 @@ char                   *i3_find_social( CHAR_DATA *ch, char *sname, char *person
     return socname;
 }
 
-/* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a newï¿½sentence. */
+/* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a new sentence. */
 char                   *i3act_string( const char *format, CHAR_DATA *ch, CHAR_DATA *vic )
 {
     static const char      *he_she[] = { "it", "he", "she" };

@@ -213,8 +213,9 @@ bool check_skill(CHAR_DATA *ch, char *command, char *argument)
       sn = 0;
       sn = skill_lookup(command);
       if(sn > 0)
-        if(skill_table[sn]->type == SKILL_SONG)
-          break;
+        if(skill_table[sn]->type == SKILL_SONG || skill_table[sn]->type == SKILL_RACIAL || skill_table[sn]->type == SKILL_SKILL)
+          if(can_use_skill(ch, 0, sn) || tele == TRUE)
+            break;
 //          send_to_char("That is a song, you need to PLAY it.\r\n", ch);
 
       return FALSE;
@@ -1734,6 +1735,19 @@ void learn_from_success(CHAR_DATA *ch, int sn)
 
   if(sn == -1)
     return;
+
+  if(skill_table[sn]->type == SKILL_RACIAL)
+  {
+    learn = 1;
+    if(ch->pcdata->learned[sn] < adept)
+    {
+      ch->pcdata->learned[sn] = UMIN(adept, ch->pcdata->learned[sn] + learn);
+      ch_printf(ch, "&WYour instincts sharpen as you practice %s.&D\r\n", skill_table[sn]->name);
+      if(xIS_SET(ch->act, PLR_ENHANCED))
+        send_to_char("!!SOUND(sound/learn.wav)\r\n", ch);
+    }
+    return;
+  }
 
   if(ch->pcdata->learned[sn] < adept && harder > 18)
   {

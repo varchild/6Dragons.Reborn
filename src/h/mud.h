@@ -3530,6 +3530,7 @@ extern short            gsn_first_weapon;
 extern short            gsn_first_tongue;
 
 //extern short gsn_first_trade;
+extern short            gsn_first_racial;
 extern short            gsn_first_song;
 extern short            gsn_top_sn;
 
