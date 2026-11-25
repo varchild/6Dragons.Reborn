@@ -67,7 +67,7 @@ bool create_new_race(int race, char *argument)
 
   if(!VLD_STR(argument))
     return FALSE;
-  if(race >= MAX_RACE || race_table[race] == NULL)
+  if(race < 0 || race >= MAX_RACE || race_table[race] == NULL)
     return FALSE;
   for(i = 0; i < MAX_WHERE_NAME; i++)
     race_table[race]->where_name[i] = STRALLOC(where_name[i]);
@@ -158,9 +158,16 @@ void write_race_file(int ra)
 {
   FILE                   *fpout;
   char                    filename[MIL];
-  struct race_type       *race = race_table[ra];
+  struct race_type       *race;
   int                     i;
   int                     x, y;
+
+  if(ra < 0 || ra >= MAX_RACE || race_table[ra] == NULL)
+  {
+    bug("write_race_file: invalid race index [%d].", ra);
+    return;
+  }
+  race = race_table[ra];
 
   if(!race->race_name)
   {
@@ -504,15 +511,15 @@ void do_setrace(CHAR_DATA *ch, char *argument)
       send_to_char("You need to up MAX_RACE in mud.h and make clean.\r\n", ch);
       return;
     }
-    if((create_new_race(MAX_PC_RACE, arg1)) == FALSE)
+    ra = MAX_PC_RACE;
+    if((create_new_race(ra, arg1)) == FALSE)
     {
       send_to_char("Couldn't create a new race.\r\n", ch);
       return;
     }
+    write_race_file(ra);
     MAX_PC_RACE++;
     update_racelist();
-    ra = MAX_PC_RACE;
-    write_race_file(MAX_PC_RACE);
     send_to_char("New race created.\r\n", ch);
     return;
   }
