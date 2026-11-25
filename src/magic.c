@@ -3449,7 +3449,7 @@ ch_ret spell_mass_invis(int sn, int level, CHAR_DATA *ch, void *vo)
     send_to_char("You try to cast mass invisible on everyone, but loose concentration.\r\n", ch);
     return rSPELL_FAILED;
   }
-
+  return rNONE;
 }
 
 ch_ret spell_polymorph(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4444,7 +4444,7 @@ ch_ret spell_sage_wisdom(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "You arch an eyebrow as the sage wisdom magic fills your mind!", ch, NULL, victim, TO_VICT);
   if(ch == victim)
     act(AT_MAGIC, "You arch an eyebrow as the sage wisdom magic fills your mind!", ch, NULL, victim, TO_CHAR);
-
+  return rNONE;
 }
 
 ch_ret spell_elven_features(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4473,7 +4473,7 @@ ch_ret spell_elven_features(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "Your facial blemishes vanish as the elven features magic fills your body!", ch, NULL, victim, TO_VICT);
   if(ch == victim)
     act(AT_MAGIC, "Your facial blemishes vanish as the elven features magic fills your body!", ch, NULL, victim, TO_CHAR);
-
+  return rNONE;
 }
 
 ch_ret spell_gamblers_luck(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4503,7 +4503,7 @@ ch_ret spell_gamblers_luck(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "You grin as the gamblers luck magic fills your body!", ch, NULL, victim, TO_VICT);
   if(ch == victim)
     act(AT_MAGIC, "You grin as the gamblers luck magic fills your body!", ch, NULL, victim, TO_CHAR);
-
+  return rNONE;
 }
 
 ch_ret spell_insanity(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4540,7 +4540,7 @@ ch_ret spell_insanity(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "$n begins to speak in jibberish at first and then you recognize it!", ch, NULL, victim, TO_VICT);
   act(AT_MAGIC, "You speak the jibberish of the insane.", ch, NULL, victim, TO_CHAR);
   act(AT_MAGIC, "$n speaks the jibberish of the insane at $N!", ch, NULL, victim, TO_NOTVICT);
-
+  return rNONE;
 }
 
 ch_ret spell_dark_blessings(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4601,6 +4601,7 @@ ch_ret spell_dark_blessings(int sn, int level, CHAR_DATA *ch, void *vo)
     act(AT_DBLUE, "You call upon a dark power!", ch, NULL, NULL, TO_CHAR);
     act(AT_CYAN, "A strange look of hatred flashes in $n's eyes..", ch, NULL, NULL, TO_ROOM);
     act(AT_DBLUE, "$n gets a look of hatred and a dark power burns within you!", ch, NULL, victim, TO_VICT);
+  return rNONE;
 }
 
 ch_ret spell_shrink(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4666,7 +4667,7 @@ ch_ret spell_shrink(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_CYAN, "$n points a finger at you, and shouts shrink!", ch, NULL, victim, TO_VICT);
   act(AT_CYAN, "You channel all your mana to shrink $N.", ch, NULL, victim, TO_CHAR);
   act(AT_MAGIC, "$n points a finger at $N and yells shrink!", ch, NULL, victim, TO_NOTVICT);
-
+  return rNONE;
 }
 
 ch_ret spell_enlarge(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4731,7 +4732,7 @@ ch_ret spell_enlarge(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_CYAN, "$n points a finger at you, and shouts enlarge!", ch, NULL, victim, TO_VICT);
   act(AT_CYAN, "You channel all your mana to enlarge $N.", ch, NULL, victim, TO_CHAR);
   act(AT_MAGIC, "$n points a finger at $N and yells enlarge!", ch, NULL, victim, TO_NOTVICT);
-
+  return rNONE;
 }
 
 ch_ret spell_imprisonment(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4879,6 +4880,7 @@ ch_ret spell_imprisonment(int sn, int level, CHAR_DATA *ch, void *vo)
   char_to_room(victim, pRoomIndex);
   do_look(victim, (char *)"auto");
   ch->mana = get_curr_int(ch);
+  return rNONE;
 }
 
 ch_ret spell_goblin_cunning(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4916,6 +4918,7 @@ ch_ret spell_goblin_cunning(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "You smile as the goblin cunning magic fills your mind!", ch, NULL, victim, TO_VICT);
   if(ch == victim)
     act(AT_MAGIC, "You smile as the goblin cunning magic fills your mind!", ch, NULL, victim, TO_CHAR);
+  return rNONE;
 }
 
 ch_ret spell_ogre_vitality(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4952,7 +4955,7 @@ ch_ret spell_ogre_vitality(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "You let loose a warcry as ogre vitality magic fills your body!", ch, NULL, victim, TO_VICT);
   if(ch == victim)
     act(AT_MAGIC, "You let loose a warcry as ogre vitality magic fills your body!", ch, NULL, victim, TO_CHAR);
-
+  return rNONE;
 }
 
 ch_ret spell_feline_grace(int sn, int level, CHAR_DATA *ch, void *vo)
@@ -4989,7 +4992,7 @@ ch_ret spell_feline_grace(int sn, int level, CHAR_DATA *ch, void *vo)
   act(AT_MAGIC, "You feel sure footed as the feline grace magic fills your body!", ch, NULL, victim, TO_VICT);
   if(ch == victim)
     act(AT_MAGIC, "You feel sure footed as the feline grace magic fills your body!", ch, NULL, victim, TO_CHAR);
-
+  return rNONE;
 }
 
 ch_ret spell_poison(int sn, int level, CHAR_DATA *ch, void *vo)

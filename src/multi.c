@@ -18,7 +18,7 @@ extern bool             doubleexp;
 // BS function I have to write, because of teacher code
 bool IS_UNDERTWENTY(CHAR_DATA *ch, int sn)
 {
-  if(sn < 0 || sn > top_sn)
+  if(sn < 0 || sn >= top_sn || !IS_VALID_SN(sn))
   {
     bug("%s: invalid sn [%d]", __FUNCTION__, sn);
     return FALSE;
@@ -43,6 +43,8 @@ bool IS_UNDERTWENTY(CHAR_DATA *ch, int sn)
   {
     return FALSE;
   }
+
+  return FALSE;
 }
 
 /*
@@ -50,7 +52,7 @@ bool IS_UNDERTWENTY(CHAR_DATA *ch, int sn)
  */
 bool CAN_LEARN(CHAR_DATA *ch, int sn, bool canlearnnow)
 {
-  if(sn < 0 || sn > top_sn)
+  if(sn < 0 || sn >= top_sn || !IS_VALID_SN(sn))
   {
     bug("%s: invalid sn [%d]", __FUNCTION__, sn);
     return FALSE;

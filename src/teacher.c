@@ -27,7 +27,7 @@ bool can_teach(CHAR_DATA *ch, CHAR_DATA *teacher, int sn)
   char                    buf[MSL];
   bool                    newpract = FALSE, isteacher = FALSE;
 
-  if(sn < 0 || sn > top_sn)
+  if(sn < 0 || sn >= top_sn || !IS_VALID_SN(sn))
   {
     bug("%s: invalid sn [%d]", __FUNCTION__, sn);
     return FALSE;
@@ -112,7 +112,7 @@ bool can_learn_elsewhere(CHAR_DATA *ch, CHAR_DATA *teacher, int sn)
   char                    buf[MSL];
   bool                    newpract = FALSE;
 
-  if(sn < 0 || sn > top_sn)
+  if(sn < 0 || sn >= top_sn || !IS_VALID_SN(sn))
   {
     bug("%s: invalid sn [%d]", __FUNCTION__, sn);
     return FALSE;
@@ -136,6 +136,7 @@ bool can_learn_elsewhere(CHAR_DATA *ch, CHAR_DATA *teacher, int sn)
   if(!xIS_SET(teacher->act, ACT_PRACTICE) && !xIS_SET(teacher->act, ACT_NEWBPRACTICE))
     return FALSE;
 
+  return FALSE;
 }
 
 bool can_show_teach(CHAR_DATA *ch, CHAR_DATA *teacher, int sn)
@@ -143,7 +144,7 @@ bool can_show_teach(CHAR_DATA *ch, CHAR_DATA *teacher, int sn)
   char                    buf[MSL];
   bool                    newpract = FALSE;
 
-  if(sn < 0 || sn > top_sn)
+  if(sn < 0 || sn >= top_sn || !IS_VALID_SN(sn))
   {
     bug("%s: invalid sn [%d]", __FUNCTION__, sn);
     return FALSE;

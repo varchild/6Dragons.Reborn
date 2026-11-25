@@ -69,7 +69,7 @@ bool create_new_race(int race, char *argument)
     return FALSE;
   if(race >= MAX_RACE || race_table[race] == NULL)
     return FALSE;
-  for(i = 0; i <= MAX_WHERE_NAME; i++)
+  for(i = 0; i < MAX_WHERE_NAME; i++)
     race_table[race]->where_name[i] = STRALLOC(where_name[i]);
   argument[0] = UPPER(argument[0]);
   snprintf(race_table[race]->race_name, 16, "%-.16s", argument);

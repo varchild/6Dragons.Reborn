@@ -569,6 +569,8 @@ bool check_phase(CHAR_DATA *ch, CHAR_DATA *victim)
   }
   else
     return FALSE;
+
+  return FALSE;
 }
 
 //Status: Completed skill, also used by priests/angels. -Taon
