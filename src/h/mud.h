@@ -2651,7 +2651,7 @@ typedef enum
   WEP_2H_LONG_BLADE, WEP_1H_LONG_BLADE, WEP_1H_SHORT_BLADE,
   WEP_WHIP, WEP_2H_BLUDGEON, WEP_1H_BLUDGEON, WEP_ARCHERY,
   WEP_BLOWGUN, WEP_2H_AXE, WEP_1H_AXE, WEP_SPEAR, WEP_STAFF,
-  WEP_LANCE, WEP_FLAIL, WEP_TALON, WEP_POLEARM, WEP_MAX
+  WEP_LANCE, WEP_FLAIL, WEP_KATAR, WEP_POLEARM, WEP_MAX
 } weapon_types;
 
 /* New projectile type array for archery weapons - Samson 1-9-00 */
@@ -3576,7 +3576,7 @@ extern short            gsn_1h_axes;
 extern short            gsn_2h_axes;
 extern short            gsn_lances;
 extern short            gsn_flails;
-extern short            gsn_talons;
+extern short            gsn_katar;
 extern short            gsn_hurl;
 extern short            gsn_target;
 extern short            gsn_polearms;

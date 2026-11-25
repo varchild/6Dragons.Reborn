@@ -258,7 +258,7 @@ short                   gsn_archery;
 short                   gsn_restring;
 short                   gsn_lances;
 short                   gsn_flails;
-short                   gsn_talons;
+short                   gsn_katar;
 short                   gsn_hurl;
 short                   gsn_target;
 
@@ -1036,7 +1036,7 @@ void boot_db(bool fCopyOver)
     ASSIGN_GSN(gsn_restring, "restring");
     ASSIGN_GSN(gsn_lances, "lances");
     ASSIGN_GSN(gsn_flails, "flails");
-    ASSIGN_GSN(gsn_talons, "talons");
+    ASSIGN_GSN(gsn_katar, "katar");
     ASSIGN_GSN(gsn_hurl, "hurl");
     ASSIGN_GSN(gsn_target, "target");
     ASSIGN_GSN(gsn_polearms, "polearms");

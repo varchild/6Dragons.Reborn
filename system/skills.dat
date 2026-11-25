@@ -7691,7 +7691,7 @@ Minlevel     1
 End
 
 #SKILL
-Name         talons~
+Name         katar~
 Type         Weapon
 Info         0
 Flags        0

@@ -1360,8 +1360,8 @@ int weapon_prof_bonus_check(CHAR_DATA *ch, OBJ_DATA *wield, int *gsn_ptr)
       case WEP_FLAIL:
         *gsn_ptr = gsn_flails;
         break;
-      case WEP_TALON:
-        *gsn_ptr = gsn_talons;
+      case WEP_KATAR:
+        *gsn_ptr = gsn_katar;
         break;
       case WEP_1H_BLUDGEON:
         *gsn_ptr = gsn_1h_bludgeons;
