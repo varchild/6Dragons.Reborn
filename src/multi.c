@@ -357,7 +357,7 @@ void advance_class_level(CHAR_DATA *ch)
     }
 
     ch_printf(ch, "\r\n&WYou have now obtained an overall experience level %d!&D\r\n", ++ch->level);
-    grant_racial_skills(ch, FALSE);
+    grant_abilities(ch, FALSE);
     restore_char(ch);
     send_to_char_color("&YYou have gained insight in the realms, and have been restored!\r\n", ch);
     snprintf(buf, MSL, "The realms rejoice as %s has just achieved level %d!&D", ch->name, ch->level);
@@ -367,7 +367,7 @@ void advance_class_level(CHAR_DATA *ch)
   }
 }
 
-void grant_racial_skills(CHAR_DATA *ch, bool silent)
+void grant_abilities(CHAR_DATA *ch, bool silent)
 {
   int                     sn;
 

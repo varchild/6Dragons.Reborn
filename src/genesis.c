@@ -1038,7 +1038,7 @@ void genesis(DESCRIPTOR_DATA *d, char *argument)
         addname(&ch->pcdata->chan_listen, "chat");
         addname(&ch->pcdata->chan_listen, "say");
         ch->level = 1;
-         grant_racial_skills(ch, TRUE);
+         grant_abilities(ch, TRUE);
         ch->exp = 0;
         ch->practice = 6;
         /*
@@ -1298,7 +1298,7 @@ void genesis(DESCRIPTOR_DATA *d, char *argument)
         ch->pcdata->learned[gsn_slice] = 50;
         if(ch->race == RACE_DRAGON && ch->pcdata->learned[gsn_devour] == 0)
           ch->pcdata->learned[gsn_devour] = 95;
-        grant_racial_skills(ch, TRUE);
+        grant_abilities(ch, TRUE);
 
         SET_BIT(d->character->pcdata->flags, PCFLAG_HINTS);
         if(!sysdata.WAIT_FOR_AUTH)
@@ -1761,7 +1761,7 @@ void genesis(DESCRIPTOR_DATA *d, char *argument)
       if(!ch->pcdata->textspeed)
         ch->pcdata->textspeed = 5;
 
-      grant_racial_skills(ch, FALSE);
+      grant_abilities(ch, FALSE);
 
 /* Volk: Make sure no skills are higher than they should be! */
       int                     sn;

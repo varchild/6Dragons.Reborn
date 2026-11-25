@@ -605,7 +605,7 @@ void advance_level(CHAR_DATA *ch)
     }
   }
 
-  grant_racial_skills(ch, FALSE);
+  grant_abilities(ch, FALSE);
 }
 
 void gain_craft(CHAR_DATA *ch, int gain)
