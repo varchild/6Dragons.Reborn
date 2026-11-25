@@ -379,7 +379,7 @@ void grant_racial_skills(CHAR_DATA *ch, bool silent)
     if(!skill_table[sn] || !skill_table[sn]->name)
       continue;
 
-    if(skill_table[sn]->type != SKILL_RACIAL)
+    if(skill_table[sn]->type != SKILL_ABILITY)
       continue;
 
     if(skill_table[sn]->race_level[ch->race] < LEVEL_IMMORTAL

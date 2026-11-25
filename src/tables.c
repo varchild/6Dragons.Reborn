@@ -28,7 +28,7 @@ SKILLTYPE              *disease_table[MAX_DISEASE];
 LANG_DATA              *first_lang;
 LANG_DATA              *last_lang;
 
-const char             *const skill_tname[] = { "unknown", "Spell", "Skill", "Weapon", "Tongue", "Racial", "Unused", "Song" };
+const char             *const skill_tname[] = { "unknown", "Spell", "Skill", "Weapon", "Tongue", "Ability", "Unused", "Song" };
 
 /* Function used by qsort to sort skills */
 int skill_comp(SKILLTYPE ** sk1, SKILLTYPE ** sk2)
@@ -403,6 +403,10 @@ int get_skill(char *skilltype)
     return SKILL_WEAPON;
   if(!str_cmp(skilltype, "Tongue"))
     return SKILL_TONGUE;
+  if(!str_cmp(skilltype, "Ability"))
+    return SKILL_ABILITY;
+  if(!str_cmp(skilltype, "Racial"))
+    return SKILL_ABILITY;
   if(!str_cmp(skilltype, "Song"))
     return SKILL_SONG;
 

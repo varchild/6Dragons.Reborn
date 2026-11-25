@@ -529,7 +529,7 @@ short                   gsn_first_skill;
 short                   gsn_first_weapon;
 short                   gsn_first_tongue;
 short                   gsn_first_trade;
-short                   gsn_first_racial;
+short                   gsn_first_ability;
 short                   gsn_first_song;
 short                   gsn_top_sn;
 
@@ -743,7 +743,7 @@ void boot_db(bool fCopyOver)
   gsn_first_weapon = 0;
   gsn_first_tongue = 0;
   gsn_first_trade = 0;
-  gsn_first_racial = 0;
+  gsn_first_ability = 0;
   gsn_first_song = 0;
   gsn_top_sn = top_sn;
 
@@ -757,8 +757,8 @@ void boot_db(bool fCopyOver)
       gsn_first_weapon = x;
     else if(!gsn_first_tongue && skill_table[x]->type == SKILL_TONGUE)
       gsn_first_tongue = x;
-    else if(!gsn_first_racial && skill_table[x]->type == SKILL_RACIAL)
-      gsn_first_racial = x;
+    else if(!gsn_first_ability && skill_table[x]->type == SKILL_ABILITY)
+      gsn_first_ability = x;
     else if(!gsn_first_song && skill_table[x]->type == SKILL_SONG)
       gsn_first_song = x;
   }

@@ -3124,7 +3124,7 @@ typedef enum
 typedef enum
 {
   SKILL_UNKNOWN, SKILL_SPELL, SKILL_SKILL, SKILL_WEAPON, SKILL_TONGUE,
-  SKILL_RACIAL, SKILL_UNUSED, SKILL_SONG
+  SKILL_ABILITY, SKILL_UNUSED, SKILL_SONG
 } skill_types;
 
 struct timerset
@@ -3530,7 +3530,7 @@ extern short            gsn_first_weapon;
 extern short            gsn_first_tongue;
 
 //extern short gsn_first_trade;
-extern short            gsn_first_racial;
+extern short            gsn_first_ability;
 extern short            gsn_first_song;
 extern short            gsn_top_sn;
 

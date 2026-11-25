@@ -213,7 +213,7 @@ bool check_skill(CHAR_DATA *ch, char *command, char *argument)
       sn = 0;
       sn = skill_lookup(command);
       if(sn > 0)
-        if(skill_table[sn]->type == SKILL_SONG || skill_table[sn]->type == SKILL_RACIAL || skill_table[sn]->type == SKILL_SKILL)
+        if(skill_table[sn]->type == SKILL_SONG || skill_table[sn]->type == SKILL_ABILITY || skill_table[sn]->type == SKILL_SKILL)
           if(can_use_skill(ch, 0, sn) || tele == TRUE)
             break;
 //          send_to_char("That is a song, you need to PLAY it.\r\n", ch);
@@ -875,7 +875,7 @@ void do_sset(CHAR_DATA *ch, char *argument)
     skill->spell_sector = 0;
 
     if(!str_cmp(arg2, "ability"))
-      skill->type = SKILL_RACIAL;
+      skill->type = SKILL_ABILITY;
     for(i = 0; i < MAX_PC_CLASS; i++)
     {
       skill->skill_level[i] = LEVEL_IMMORTAL;
@@ -1736,7 +1736,7 @@ void learn_from_success(CHAR_DATA *ch, int sn)
   if(sn == -1)
     return;
 
-  if(skill_table[sn]->type == SKILL_RACIAL)
+  if(skill_table[sn]->type == SKILL_ABILITY)
   {
     learn = 1;
     if(ch->pcdata->learned[sn] < adept)
@@ -1891,13 +1891,13 @@ void learn_from_failure(CHAR_DATA *ch, int sn)
 
   if(sn == gsn_forge || sn == gsn_tan || sn == gsn_bake || sn == gsn_mix || sn == gsn_mine || sn == gsn_unearth
      || sn == gsn_gather || sn == gsn_hunt || sn == gsn_jewelry || sn == gsn_mill || sn == gsn_fell || sn == gsn_produce
-     || skill_table[sn]->type == SKILL_RACIAL)
+     || skill_table[sn]->type == SKILL_ABILITY)
   {
     if(ch->pcdata->learned[sn] < adept && chance > 8)
     {
       learn = 1;
       ch->pcdata->learned[sn] = UMIN(adept, ch->pcdata->learned[sn] + learn);
-      if(skill_table[sn]->type == SKILL_RACIAL)
+      if(skill_table[sn]->type == SKILL_ABILITY)
         ch_printf(ch, "&WYour instincts sharpen as you practice %s.&D\r\n", skill_table[sn]->name);
       else
         act(AT_WHITE, "You learned something new from this failed attempt.", ch, NULL, NULL, TO_CHAR);

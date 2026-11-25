@@ -3740,7 +3740,7 @@ End
 
 #SKILL
 Name         bite~
-Type         Racial
+Type         Ability
 Info         0
 Flags        0
 Target       1
@@ -4090,7 +4090,7 @@ End
 
 #SKILL
 Name         claw~
-Type         Racial
+Type         Ability
 Info         0
 Flags        0
 Target       1
@@ -6738,7 +6738,7 @@ End
 
 #SKILL
 Name         smell~
-Type         Racial
+Type         Ability
 Info         0
 Flags        0
 Minpos       115
@@ -7485,7 +7485,7 @@ End
 
 #SKILL
 Name         wings~
-Type         Racial
+Type         Ability
 Info         0
 Flags        0
 Target       3

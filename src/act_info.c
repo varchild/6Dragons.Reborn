@@ -4223,7 +4223,7 @@ int find_skill_class(CHAR_DATA *ch, int sn)
 {
   int                     Class = -2;
 
-  if(skill_table[sn]->type == SKILL_RACIAL)
+  if(skill_table[sn]->type == SKILL_ABILITY)
     return -1;
 
   if(skill_table[sn]->skill_level[ch->Class] < 101)
@@ -4251,7 +4251,7 @@ int find_skill_class(CHAR_DATA *ch, int sn)
  * normally in this list.  Separate each with a space.
  * (Uses an is_name check). -- Altrag
  */
-#define CANT_PRAC "Tongue Racial"
+#define CANT_PRAC "Tongue Ability"
 
 int first_learn_skill_level(CHAR_DATA *ch, int sn)
 {

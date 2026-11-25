@@ -306,9 +306,10 @@ create a new one with the sset command.
 If these give you a error message about MAX_HERB or MAX_SKILL needing to be 
 upped you need to open up mud.h, up the appropriate variable a few places,
 make clean and then make.
-The difference between a skill and an ability is that an ability gets set
-to type SKILL_RACIAL.  Which means only certain races can use that ability.
-Right now this is unsupported however.
+An ability is assigned the type SKILL_ABILITY. This identifies its category,
+not which characters may acquire or use it. Eligibility is handled separately.
+Existing abilities may have race-specific restrictions, but race restriction
+is not inherent to the ability category.
 So to set up a new herb called sunflower and a new skill called coding,
 you would issue the following commands:
 	sset create herb 'sunflower'
@@ -377,8 +378,9 @@ Once you do that you will be able to set various fields on each:
 	For example:	sset 107 minlevel 25
 
 *type -- This sets the type of the skill.  Currently there are 6 types.
-	Race, Spell, Skill, Weapon, Tongue, Herb.
-	The Race sets it to a racial skill this is currently not supported.
+	Ability, Spell, Skill, Weapon, Tongue, Song.
+	The Ability sets it to an ability-category skill; eligibility and
+	acquisition are separate concerns.
 	Spell sets it up so you have to cast it, like a protection spell.
 	Skill sets it up so you use this skill by typing its name, for example
 	kick or punch. A weapon is used for things like pugilism, pierce, etc..
