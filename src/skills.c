@@ -4017,6 +4017,57 @@ void do_claw(CHAR_DATA *ch, char *argument)
   }
 }
 
+void do_talons(CHAR_DATA *ch, char *argument)
+{
+  CHAR_DATA              *victim;
+  char                   arg[MIL];
+
+  if(IS_AFFECTED(ch, AFF_DRAGONLORD))
+  {
+    send_to_char("Your new form prevents the use of this skill.\r\n", ch);
+    return;
+  }
+
+  if(!IS_NPC(ch) && !CAN_LEARN(ch, gsn_talons, TRUE))
+  {
+    send_to_char("That isn't quite one of your natural skills.\r\n", ch);
+    return;
+  }
+
+  one_argument(argument, arg);
+
+  if(arg[0] == '\0')
+  {
+    if(ch->fighting)
+      victim = who_fighting(ch);
+    else
+    {
+      send_to_char("Talons whom?\r\n", ch);
+      return;
+    }
+  }
+  else if((victim = get_char_room(ch, arg)) == NULL)
+  {
+    send_to_char("They aren't here.\r\n", ch);
+    return;
+  }
+
+  WAIT_STATE(ch, skill_table[gsn_talons]->beats);
+  if(can_use_skill(ch, number_percent(), gsn_talons))
+  {
+    learn_from_success(ch, gsn_talons);
+    if(xIS_SET(ch->act, ACT_PET))
+      global_retcode = damage(ch, victim, extrahigh, gsn_talons);
+    else
+      global_retcode = damage(ch, victim, nominal, gsn_talons);
+  }
+  else
+  {
+    learn_from_failure(ch, gsn_talons);
+    global_retcode = damage(ch, victim, 0, gsn_talons);
+  }
+}
+
 void do_sting(CHAR_DATA *ch, char *argument)
 {
   CHAR_DATA              *victim;

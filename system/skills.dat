@@ -7079,6 +7079,19 @@ Minlevel     37
 End
 
 #SKILL
+Name         talons~
+Type         Skill
+Info         0
+Flags        0
+Target       1
+Minpos       105
+Rounds       8
+Code         do_talons
+Dammsg       talons~
+Minlevel     1
+End
+
+#SKILL
 Name         tame~
 Type         Skill
 Info         0
@@ -7696,7 +7709,7 @@ Type         Weapon
 Info         0
 Flags        0
 Code         spell_null
-Wearoff      !talons!~
+Wearoff      !katar!~
 Difficulty   5
 Minlevel     1
 End

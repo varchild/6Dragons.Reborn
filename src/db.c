@@ -459,6 +459,7 @@ short                   gsn_gust_of_wind;
 short                   gsn_stomp;
 short                   gsn_bite;
 short                   gsn_claw;
+short                   gsn_talons;
 short                   gsn_sting;
 short                   gsn_scribe;
 short                   gsn_brew;
@@ -1254,6 +1255,7 @@ void boot_db(bool fCopyOver)
     ASSIGN_GSN(gsn_stomp, "stomp");
     ASSIGN_GSN(gsn_bite, "bite");
     ASSIGN_GSN(gsn_claw, "claw");
+    ASSIGN_GSN(gsn_talons, "talons");
     ASSIGN_GSN(gsn_sting, "sting");
     ASSIGN_GSN(gsn_scribe, "scribe");
     ASSIGN_GSN(gsn_brew, "brew");

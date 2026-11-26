@@ -3551,6 +3551,7 @@ extern short            gsn_bash;
 extern short            gsn_stun;
 extern short            gsn_bite;
 extern short            gsn_claw;
+extern short            gsn_talons;
 extern short            gsn_sting;
 
 extern short            gsn_poison_weapon;
@@ -4393,6 +4394,7 @@ DECLARE_DO_FUN(do_effloresce);
 DECLARE_DO_FUN(do_sylvan_touch);
 DECLARE_DO_FUN(do_trades);
 DECLARE_DO_FUN(do_claw);
+DECLARE_DO_FUN(do_talons);
 DECLARE_DO_FUN(do_clear);
 DECLARE_DO_FUN(do_climb);
 DECLARE_DO_FUN(do_close);
