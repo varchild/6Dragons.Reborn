@@ -1,0 +1,9 @@
+# Player character save files
+/player/*/*
+!/player/*/.gitignore
+
+# Compiled server executable
+/6dragons
+
+# Compiled object files
+/src/o/*.o

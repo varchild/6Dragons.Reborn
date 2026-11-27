@@ -109,7 +109,7 @@ $(PROG_NAME): $(O_FILES)
 	@echo "Done Compiling $(PROG_NAME)"
 
 symref.c: h/mud.h symref_template.c mktables h/landmark.h 
-	./mktables symref.c symref_template.c -h h/mud.h -h h/landmark.h 
+	perl ./mktables symref.c symref_template.c -h h/mud.h -h h/landmark.h
 
 o/%.o: %.c $(H_FILES)
 	echo "  Compiling $@";

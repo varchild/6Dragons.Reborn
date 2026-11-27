@@ -4,7 +4,7 @@
  * - Merc  2.1  Copyright 1992, 1993 by Michael Chastain, Michael Quan,    *
  *   and Mitchell Tse.                                                     *
  * - DikuMud    Copyright 1990, 1991 by Sebastian Hammer, Michael Seifert, *
- *   Hans-Henrik Stærfeldt, Tom Madsen, and Katja Nyboe.                   *
+ *   Hans-Henrik Stï¿½rfeldt, Tom Madsen, and Katja Nyboe.                   *
  ***************************************************************************
  * - Low-level communication module                                        *
  ***************************************************************************/
@@ -3192,6 +3192,7 @@ void display_prompt(DESCRIPTOR_DATA *d)
   unsigned int            stat;
   double                  pcheck;
   int                     percent;
+  size_t                  remaining;
 
   if(!ch)
   {
@@ -3218,15 +3219,23 @@ void display_prompt(DESCRIPTOR_DATA *d)
    */
   if(d->mxp)
   {
-    strcpy(pbuf, ESC "[3z");
-    pbuf += 4;
+    remaining = sizeof(buf) - (size_t)(pbuf - buf);
+    if(remaining > 1)
+    {
+      snprintf(pbuf, remaining, "%s", ESC "[3z");
+      pbuf += strlen(pbuf);
+    }
   }
 
   if(ansi)
   {
-    mudstrlcpy(pbuf, ANSI_RESET, MSL);
-    d->prevcolor = 0x08;
-    pbuf += 4;
+    remaining = sizeof(buf) - (size_t)(pbuf - buf);
+    if(remaining > 1)
+    {
+      mudstrlcpy(pbuf, ANSI_RESET, remaining);
+      d->prevcolor = 0x08;
+      pbuf += strlen(pbuf);
+    }
   }
   for(; *prompt; prompt++)
   {
@@ -3236,7 +3245,14 @@ void display_prompt(DESCRIPTOR_DATA *d)
      */
     if(*prompt != '%')
     {
-      *(pbuf++) = *prompt;
+      remaining = sizeof(buf) - (size_t)(pbuf - buf);
+      if(remaining > 1)
+      {
+        *pbuf++ = *prompt;
+        *pbuf = '\0';
+      }
+      else
+        break;
       continue;
     }
     ++prompt;
@@ -3244,7 +3260,14 @@ void display_prompt(DESCRIPTOR_DATA *d)
       break;
     if(*prompt == *(prompt - 1))
     {
-      *(pbuf++) = *prompt;
+      remaining = sizeof(buf) - (size_t)(pbuf - buf);
+      if(remaining > 1)
+      {
+        *pbuf++ = *prompt;
+        *pbuf = '\0';
+      }
+      else
+        break;
       continue;
     }
 
@@ -3259,125 +3282,158 @@ void display_prompt(DESCRIPTOR_DATA *d)
         switch (*prompt)
         {
           case '%':
-            *pbuf++ = '%';
-            *pbuf = '\0';
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+            {
+              *pbuf++ = '%';
+              *pbuf = '\0';
+            }
             break;
           case 'a':
             if(ch->level >= 10)
               stat = ch->alignment;
             else if(IS_GOOD(ch))
-              mudstrlcpy(pbuf, "good", MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "good", remaining);
+            }
             else if(IS_EVIL(ch))
-              mudstrlcpy(pbuf, "evil", MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "evil", remaining);
+            }
             else
-              mudstrlcpy(pbuf, "neutral", MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "neutral", remaining);
+            }
             break;
           case 'A':
             if(xIS_SET(ch->act, PLR_AFK))
             {
-              char                    afkbuf[MSL];
-
-              mudstrlcpy(afkbuf, "AFK", MSL);
-              mudstrlcat(pbuf, afkbuf, MSL);
-              pbuf += strlen(afkbuf);
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcat(pbuf, "AFK", remaining);
             }
             break;
 
           case 'C':  /* Tank */
             if(!ch->fighting || (victim = ch->fighting->who) == NULL)
-              mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "N/A", remaining);
+            }
             else if(!victim->fighting || (victim = victim->fighting->who) == NULL)
-              mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "N/A", remaining);
+            }
             else
             {
               if(victim->max_hit > 0)
                 percent = (100 * victim->hit) / victim->max_hit;
               else
                 percent = -1;
-              if(percent >= 100)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &gPerfect Health", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 90)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &OSlightly Scratched", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 80)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &YFew Bruises", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 70)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &YSome Cuts", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 60)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &PSeveral Wounds", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 50)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &pNasty Wounds", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 40)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &pBleeding Freely", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 30)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &rCovered in Blood", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 20)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &rLeaking Guts", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else if(percent >= 10)
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &RAlmost Dead", !IS_NPC(victim) ? victim->name : victim->short_descr);
-              else
-                sprintf(pbuf, "&g<&cT:&w%s &cTC: &RDYING", !IS_NPC(victim) ? victim->name : victim->short_descr);
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+              {
+                if(percent >= 100)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &gPerfect Health", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 90)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &OSlightly Scratched", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 80)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &YFew Bruises", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 70)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &YSome Cuts", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 60)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &PSeveral Wounds", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 50)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &pNasty Wounds", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 40)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &pBleeding Freely", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 30)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &rCovered in Blood", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 20)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &rLeaking Guts", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else if(percent >= 10)
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &RAlmost Dead", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                else
+                  snprintf(pbuf, remaining, "&g<&cT:&w%s &cTC: &RDYING", !IS_NPC(victim) ? victim->name : victim->short_descr);
+              }
             }
             break;
           case 'c':
             if(!ch->fighting || (victim = ch->fighting->who) == NULL)
-              mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "N/A", remaining);
+            }
             else
             {
               if(victim->max_hit > 0)
                 percent = (100 * victim->hit) / victim->max_hit;
               else
                 percent = -1;
-              if(!IS_NPC(ch))
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
               {
-                if(percent >= 100)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &gPerfect Health&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 90)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &OSlightly Scratched&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 80)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &YFew Bruises&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 70)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &YSome Cuts&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 60)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &PSeveral Wounds&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 50)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &pNasty Wounds&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 40)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &pBleeding Freely&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 30)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &rCovered in Blood&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 20)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &rLeaking Guts&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
-                else if(percent >= 10)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &RAlmost Dead&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                if(!IS_NPC(ch))
+                {
+                  if(percent >= 100)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &gPerfect Health&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 90)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &OSlightly Scratched&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 80)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &YFew Bruises&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 70)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &YSome Cuts&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 60)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &PSeveral Wounds&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 50)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &pNasty Wounds&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 40)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &pBleeding Freely&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 30)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &rCovered in Blood&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 20)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &rLeaking Guts&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else if(percent >= 10)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &RAlmost Dead&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                  else
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &RDYING&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                }
                 else
-                  sprintf(pbuf, "&cE: &w%s &cEC: &RDYING&g>", !IS_NPC(victim) ? victim->name : victim->short_descr);
+                {
+                  if(percent >= 100)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &gPerfect Health&g>", victim->short_descr);
+                  else if(percent >= 90)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &OSlightly Scratched&g>", victim->short_descr);
+                  else if(percent >= 80)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &YFew Bruises&g>", victim->short_descr);
+                  else if(percent >= 70)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &YSome Cuts&g>", victim->short_descr);
+                  else if(percent >= 60)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &PSeveral Wounds&g>", victim->short_descr);
+                  else if(percent >= 50)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &pNasty Wounds&g>", victim->short_descr);
+                  else if(percent >= 40)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &pBleeding Freely&g>", victim->short_descr);
+                  else if(percent >= 30)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &rCovered in Blood&g>", victim->short_descr);
+                  else if(percent >= 20)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &rLeaking Guts&g>", victim->short_descr);
+                  else if(percent >= 10)
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &RAlmost Dead&g>", victim->short_descr);
+                  else
+                    snprintf(pbuf, remaining, "&cE: &w%s &cEC: &RDYING&g>", victim->short_descr);
+                }
               }
-              else
-              {
-                if(percent >= 100)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &gPerfect Health&g>", victim->short_descr);
-                else if(percent >= 90)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &OSlightly Scratched&g>", victim->short_descr);
-                else if(percent >= 80)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &YFew Bruises&g>", victim->short_descr);
-                else if(percent >= 70)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &YSome Cuts&g>", victim->short_descr);
-                else if(percent >= 60)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &PSeveral Wounds&g>", victim->short_descr);
-                else if(percent >= 50)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &pNasty Wounds&g>", victim->short_descr);
-                else if(percent >= 40)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &pBleeding Freely&g>", victim->short_descr);
-                else if(percent >= 30)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &rCovered in Blood&g>", victim->short_descr);
-                else if(percent >= 20)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &rLeaking Guts&g>", victim->short_descr);
-                else if(percent >= 10)
-                  sprintf(pbuf, "&cE: &w%s &cEC: &RAlmost Dead&g>", victim->short_descr);
-                else
-                  sprintf(pbuf, "&cE: &w%s &cEC: &RDYING&g>", victim->short_descr);
-              }
-
             }
             break;
             /*
@@ -3421,7 +3477,11 @@ void display_prompt(DESCRIPTOR_DATA *d)
 
           case 'F':
             if(IS_IMMORTAL(och))
-              snprintf(pbuf, MSL, "%s", flag_string(ch->in_room->room_flags, r_flags));
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                snprintf(pbuf, remaining, "%s", flag_string(ch->in_room->room_flags, r_flags));
+            }
             break;
           case 'g':
             stat = GET_MONEY(ch, DEFAULT_CURR);
@@ -3435,16 +3495,22 @@ void display_prompt(DESCRIPTOR_DATA *d)
             stat = ch->max_hit;
             break;
           case 'i':
-            if((!IS_NPC(ch) && xIS_SET(ch->act, PLR_WIZINVIS)) || (IS_NPC(ch) && xIS_SET(ch->act, ACT_MOBINVIS)))
-              snprintf(pbuf, MSL, "(Invis %d) ", (IS_NPC(ch) ? ch->mobinvis : ch->pcdata->wizinvis));
-            else if(IS_AFFECTED(ch, AFF_INVISIBLE))
-              mudstrlcpy(pbuf, "(Invis) ", MSL);
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+            {
+              if((!IS_NPC(ch) && xIS_SET(ch->act, PLR_WIZINVIS)) || (IS_NPC(ch) && xIS_SET(ch->act, ACT_MOBINVIS)))
+                snprintf(pbuf, remaining, "(Invis %d) ", (IS_NPC(ch) ? ch->mobinvis : ch->pcdata->wizinvis));
+              else if(IS_AFFECTED(ch, AFF_INVISIBLE))
+                mudstrlcpy(pbuf, "(Invis) ", remaining);
+            }
             break;
           case 'I':
             stat = (IS_NPC(ch) ? (xIS_SET(ch->act, ACT_MOBINVIS) ? ch->mobinvis : 0) : (xIS_SET(ch->act, PLR_WIZINVIS) ? ch->pcdata->wizinvis : 0));
             break;
           case 'l':
-            mudstrlcpy(pbuf, "\r\n", MAX_STRING_LENGTH);
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+              mudstrlcpy(pbuf, "\r\n", remaining);
             break;
           case 'm':
             if(IS_BLOODCLASS(ch))
@@ -3460,37 +3526,63 @@ void display_prompt(DESCRIPTOR_DATA *d)
             break;
           case 'n':
             if(!ch->fighting || (victim = ch->fighting->who) == NULL)
-              mudstrlcpy(pbuf, "N/A", MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "N/A", remaining);
+            }
             else
             {
-              if(ch == victim)
-                mudstrlcpy(pbuf, "You", MSL);
-              else if(IS_NPC(victim))
-                mudstrlcpy(pbuf, victim->short_descr, MSL);
-              else
-                mudstrlcpy(pbuf, victim->name, MSL);
-              pbuf[0] = UPPER(pbuf[0]);
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+              {
+                if(ch == victim)
+                  mudstrlcpy(pbuf, "You", remaining);
+                else if(IS_NPC(victim))
+                  mudstrlcpy(pbuf, victim->short_descr, remaining);
+                else
+                  mudstrlcpy(pbuf, victim->name, remaining);
+                if(pbuf[0])
+                  pbuf[0] = UPPER(pbuf[0]);
+              }
             }
             break;
           case 'N':  /* Tank */
             if(!ch->fighting || (victim = ch->fighting->who) == NULL)
-              mudstrlcpy(pbuf, "N/A", MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "N/A", remaining);
+            }
             else if(!victim->fighting || (victim = victim->fighting->who) == NULL)
-              mudstrlcpy(pbuf, "N/A", MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, "N/A", remaining);
+            }
             else
             {
-              if(ch == victim)
-                mudstrlcpy(pbuf, "You", MSL);
-              else if(IS_NPC(victim))
-                mudstrlcpy(pbuf, victim->short_descr, MSL);
-              else
-                mudstrlcpy(pbuf, victim->name, MSL);
-              pbuf[0] = UPPER(pbuf[0]);
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+              {
+                if(ch == victim)
+                  mudstrlcpy(pbuf, "You", remaining);
+                else if(IS_NPC(victim))
+                  mudstrlcpy(pbuf, victim->short_descr, remaining);
+                else
+                  mudstrlcpy(pbuf, victim->name, remaining);
+                if(pbuf[0])
+                  pbuf[0] = UPPER(pbuf[0]);
+              }
             }
             break;
           case 'o':  /* display name of object on * * * * auction */
             if(auction->item)
-              mudstrlcpy(pbuf, auction->item->name, MSL);
+            {
+              remaining = sizeof(buf) - (size_t)(pbuf - buf);
+              if(remaining > 1)
+                mudstrlcpy(pbuf, auction->item->name, remaining);
+            }
             break;
           case 'O':  /* display cost of object on * * * * auction */
             if(auction->item)
@@ -3511,31 +3603,41 @@ void display_prompt(DESCRIPTOR_DATA *d)
               stat = ch->in_room->vnum;
             break;
           case 's':
-            snprintf(pbuf, MSL, "%s%s%s", IS_AFFECTED(ch, AFF_INVISIBLE) ? "I" : "", IS_AFFECTED(ch, AFF_HIDE) ? "H" : "", IS_AFFECTED(ch, AFF_SNEAK) ? "S" : "");
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+              snprintf(pbuf, remaining, "%s%s%s", IS_AFFECTED(ch, AFF_INVISIBLE) ? "I" : "", IS_AFFECTED(ch, AFF_HIDE) ? "H" : "", IS_AFFECTED(ch, AFF_SNEAK) ? "S" : "");
             break;
           case 'S':
-            if(ch->style == STYLE_BERSERK)
-              mudstrlcpy(pbuf, "B", MSL);
-            else if(ch->style == STYLE_AGGRESSIVE)
-              mudstrlcpy(pbuf, "A", MSL);
-            else if(ch->style == STYLE_DEFENSIVE)
-              mudstrlcpy(pbuf, "D", MSL);
-            else if(ch->style == STYLE_EVASIVE)
-              mudstrlcpy(pbuf, "E", MSL);
-            else
-              mudstrlcpy(pbuf, "S", MSL);
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+            {
+              if(ch->style == STYLE_BERSERK)
+                mudstrlcpy(pbuf, "B", remaining);
+              else if(ch->style == STYLE_AGGRESSIVE)
+                mudstrlcpy(pbuf, "A", remaining);
+              else if(ch->style == STYLE_DEFENSIVE)
+                mudstrlcpy(pbuf, "D", remaining);
+              else if(ch->style == STYLE_EVASIVE)
+                mudstrlcpy(pbuf, "E", remaining);
+              else
+                mudstrlcpy(pbuf, "S", remaining);
+            }
             break;
           case 'T':
-            if(time_info.hour < 5)
-              mudstrlcpy(pbuf, "night", MSL);
-            else if(time_info.hour < 6)
-              mudstrlcpy(pbuf, "dawn", MSL);
-            else if(time_info.hour < 19)
-              mudstrlcpy(pbuf, "day", MSL);
-            else if(time_info.hour < 21)
-              mudstrlcpy(pbuf, "dusk", MSL);
-            else
-              mudstrlcpy(pbuf, "night", MSL);
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+            {
+              if(time_info.hour < 5)
+                mudstrlcpy(pbuf, "night", remaining);
+              else if(time_info.hour < 6)
+                mudstrlcpy(pbuf, "dawn", remaining);
+              else if(time_info.hour < 19)
+                mudstrlcpy(pbuf, "day", remaining);
+              else if(time_info.hour < 21)
+                mudstrlcpy(pbuf, "dusk", remaining);
+              else
+                mudstrlcpy(pbuf, "night", remaining);
+            }
             break;
           case 'u':
             if(IS_IMMORTAL(och))
@@ -3564,11 +3666,17 @@ void display_prompt(DESCRIPTOR_DATA *d)
              * Allow them to use more then one line for prompt 
              */
           case 'z':
-            mudstrlcpy(pbuf, "\r\n", MSL);
+            remaining = sizeof(buf) - (size_t)(pbuf - buf);
+            if(remaining > 1)
+              mudstrlcpy(pbuf, "\r\n", remaining);
             break;
         }
         if(stat != 0x80000000)
-          snprintf(pbuf, MSL, "%d", stat);
+        {
+          remaining = sizeof(buf) - (size_t)(pbuf - buf);
+          if(remaining > 1)
+            snprintf(pbuf, remaining, "%d", stat);
+        }
         pbuf += strlen(pbuf);
         break;
     }
